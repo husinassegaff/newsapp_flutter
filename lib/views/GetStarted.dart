@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/views/Register.dart';
 
 import 'Login.dart';
 
@@ -42,7 +43,10 @@ class _GetStartedState extends State<GetStarted> {
                 Padding(
                   padding: EdgeInsets.only(top: 15),
                   child: ElevatedButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Route route = MaterialPageRoute(builder: (context) => const Register());
+                      Navigator.push(context, route);
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: const Color(0xFF1F99CC),
                       textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),

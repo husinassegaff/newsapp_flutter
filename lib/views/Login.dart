@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/views/GetStarted.dart';
+import 'package:newsapp/views/Register.dart';
 
 import 'BottomNavigation.dart';
 
@@ -17,7 +19,13 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Route route = MaterialPageRoute(builder: (context) => const GetStarted());
+            Navigator.push(context, route);
+          },
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -39,23 +47,7 @@ class _LoginState extends State<Login> {
             padding: EdgeInsets.only(top: 20),
             child:  Image(image: AssetImage("assets/img/icon_splash_screen.png"), width: 140),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 15),
-            child: ElevatedButton(
-                onPressed: (){},
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: const Color(0xFF424242),
-                  textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  backgroundColor: const Color(0xFFFFFFFF),
-                  side: const BorderSide(color: Color(0x0fffffff), width: 2),
-                  padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                child: Text("Sign In with Google")
-            ),
-          ),
+
           const Padding(
             padding: EdgeInsets.only(top: 45, left: 20, right: 20),
             child: TextField(
@@ -102,7 +94,10 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 const Text("Belum punya akun?"),
                 TextButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Route route = MaterialPageRoute(builder: (context) => const Register());
+                    Navigator.push(context, route);
+                  },
                   child: const Text("Daftar", style: TextStyle(color: Color(0xFF1F99CC)),
                   ),
                 )

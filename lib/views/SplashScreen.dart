@@ -1,6 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:newsapp/views/GetStarted.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -27,13 +29,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Image.asset("assets/img/icon_splash_screen.png"),
-          Text("Final Project Flutter"),
-          CircularProgressIndicator()
-        ],
-      )
+        backgroundColor: Colors.white,
+        body: Center(
+            child: Image.asset("assets/img/icon_splash_screen.png", width: 180)
+        )
     );
   }
 }
