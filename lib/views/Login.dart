@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/views/GetStarted.dart';
 import 'package:newsapp/views/Register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'BottomNavigation.dart';
 
@@ -12,6 +13,27 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  loginSubmit() async {
+    try {
+      _firebaseAuth.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text
+      ).then((value) => Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => BottomNavigation())
+      )
+      );
+    } catch(e) {
+      print(e);
+      SnackBar(content: Text(e.toString()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,21 +70,24 @@ class _LoginState extends State<Login> {
             child:  Image(image: AssetImage("assets/img/icon_splash_screen.png"), width: 140),
           ),
 
-          const Padding(
-            padding: EdgeInsets.only(top: 45, left: 20, right: 20),
+          Container(
+            padding: EdgeInsets.all(10),
             child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email',
+              controller: _emailController,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Email"
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 15, left: 20, right: 20),
+          Container(
+            padding: EdgeInsets.all(10),
             child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
+              controller: _passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Password"
               ),
             ),
           ),
@@ -71,8 +96,16 @@ class _LoginState extends State<Login> {
             padding: const EdgeInsets.only(top: 35),
             child:  ElevatedButton(
               onPressed: (){
-                Route route = MaterialPageRoute(builder: (context) => const BottomNavigation());
-                Navigator.push(context, route);
+
+                if(_emailController.text.isEmpty || _passwordController.text.isEmpty){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Email dan Password tidak boleh kosong"),
+                    ),
+                  );
+                } else {
+                  loginSubmit();
+                }
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
