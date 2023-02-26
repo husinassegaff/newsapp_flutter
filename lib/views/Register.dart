@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'GetStarted.dart';
 import 'Login.dart';
 
@@ -11,6 +12,30 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  registerSubmit() async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: _emailController.text.toString().trim(),
+          password: _passwordController.text
+      );
+
+      // if register success, redirect to login page
+
+      Get.offAll(() => Login());
+    } catch(e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Register failed"))
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,30 +67,35 @@ class _RegisterState extends State<Register> {
               child: Text("Silakan untuk membuat akun!", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 45, left: 20, right: 20),
+          Container(
+            padding: EdgeInsets.all(10),
             child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email',
+              controller: _emailController,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Email"
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 15, left: 20, right: 20),
+          Container(
+            padding: EdgeInsets.all(10),
             child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
+              controller: _passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Password"
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 15, left: 20, right: 20),
+          Container(
+            padding: EdgeInsets.all(10),
             child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Konfirmasi Password',
+              controller: _confirmPasswordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Konfirmasi Password"
               ),
             ),
           ),
@@ -74,8 +104,18 @@ class _RegisterState extends State<Register> {
             padding: const EdgeInsets.only(top: 35),
             child:  ElevatedButton(
               onPressed: (){
-                Route route = MaterialPageRoute(builder: (context) => const Login());
-                Navigator.push(context, route);
+                if(_passwordController.text == _confirmPasswordController.text && _passwordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty && _emailController.text.isNotEmpty) {
+                  registerSubmit();
+                } else if(_passwordController.text.isEmpty || _confirmPasswordController.text.isEmpty || _emailController.text.isEmpty){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Email atau Password tidak boleh kosong"))
+                  );
+                }
+                else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Password tidak sama"))
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
