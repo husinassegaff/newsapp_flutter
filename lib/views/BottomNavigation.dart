@@ -14,7 +14,7 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
 
   int _selectedIndex = 0;
-  final widgetTitle = ["Home", "Search", "Profile"];
+  final widgetTitle = ["Home", "News", "Profile"];
 
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
@@ -49,7 +49,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.newspaper),
-            label: 'Search',
+            label: 'News',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
